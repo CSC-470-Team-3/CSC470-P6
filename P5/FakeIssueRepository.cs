@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Builder
 {
-    class FakeIssueRepository : IIssueRepository
+   public class FakeIssueRepository : IIssueRepository
     {
         public const string
             NO_ERROR = "",
@@ -178,11 +178,11 @@ namespace Builder
             return NO_ERROR;
         }
 
-        private bool IsDuplicate(string title)
+        public bool IsDuplicate(string title)
         {
             foreach(Issue issue in _Issues)
                 if (issue.Title.Equals(title))
-                    return true;
+                     return true;
             return false;
         }
     }

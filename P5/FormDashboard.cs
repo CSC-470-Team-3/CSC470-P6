@@ -14,18 +14,19 @@ namespace P5
 {
     public partial class FormDashboard : Form
     {
-        FakeIssueRepository _fakeIssue = new FakeIssueRepository();
+        FakeIssueRepository _fakeIssue;
         FakeProjectRepository _fakeProject = new FakeProjectRepository();
         
         AppUser _CurrentAppUser;
         int _selId;
 
-        public FormDashboard(AppUser appUser, int selId)
+        public FormDashboard( AppUser appUser, int selId, FakeIssueRepository fake)
         {
-            _CurrentAppUser = appUser;
-            InitializeComponent();
-            _selId = selId;
             
+            _fakeIssue = fake;
+            _CurrentAppUser = appUser;
+            _selId = selId;
+            InitializeComponent();
         }
 
         private void FormDashboard_Load(object sender, EventArgs e)

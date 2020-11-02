@@ -14,17 +14,19 @@ namespace P5
     public partial class FormRecord : Form
     {
         FakeAppUserRepository _userRepository = new FakeAppUserRepository();
-        FakeIssueStatusRepository _fakeIssueStatusRepository = new FakeIssueStatusRepository();
-        FakeIssueRepository _fakeIssueRepository = new FakeIssueRepository();
+        FakeIssueStatusRepository fakeIssueStatusRepository = new FakeIssueStatusRepository();
+        FakeIssueRepository fakeIssueRepository;
         AppUser _CurrentAppUser;
         int _selId;
         Issue issue = new Issue();
         int _i;
         
-        public FormRecord(AppUser appUser, int selId)
+        public FormRecord(AppUser appUser, int selId, FakeIssueRepository faker)
         {
+            fakeIssueRepository = faker;
             _selId = selId;
             _CurrentAppUser = appUser;
+            
             InitializeComponent();    
         }
 
@@ -32,18 +34,21 @@ namespace P5
         {
             this.CenterToParent();
 
-            _i = _fakeIssueRepository.GetTotalNumberOfIssues(_selId) + 1;
+            _i = fakeIssueRepository.GetTotalNumberOfIssues(_selId) + 1;
             IdBox.Text = (_i.ToString());
-
+            
             foreach (AppUser user in _userRepository.GetAll())
             {
                 comboBox1.Items.Add(user.LastName + ", " +user.FirstName);
+                
             }
-            foreach (IssueStatus issueStatus in _fakeIssueStatusRepository.GetAll())
+            comboBox1.SelectedIndex = 0;
+            ComponentBox.SelectedText = "";
+            foreach (IssueStatus issueStatus in fakeIssueStatusRepository.GetAll())
             {
                 comboBox2.Items.Add(issueStatus.Value);
             }
-
+            comboBox2.SelectedIndex = 0;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -69,15 +74,23 @@ namespace P5
         private void button2_Click(object sender, EventArgs e)
         {
             issue.Id = _i;
-            issue.Title = TitleTextBox.Text.Trim();
+            if (fakeIssueRepository.IsDuplicate(TitleTextBox.Text.Trim()) != true)
+            {
+                issue.Title = TitleTextBox.Text.Trim();
+            }
+            else
+            {
+                MessageBox.Show("Please input unique Title");
+            }
+            issue.ProjectID = 1;
             issue.Discoverer = comboBox1.SelectedItem.ToString();
             issue.Component = ComponentBox.Text.Trim();
             issue.DiscoveryDate = dateTimePicker1.Value;
-            issue.IssueStatusId = _fakeIssueStatusRepository.GetIdByStatus(comboBox2.SelectedItem.ToString());
+            issue.IssueStatusId = fakeIssueStatusRepository.GetIdByStatus(comboBox2.SelectedItem.ToString());
             issue.InitialDescription = InitialDescription.Text.Trim();
 
-            string result = _fakeIssueRepository.Add(issue);
-            if(result == FakeIssueRepository.NO_ERROR)
+            string result = fakeIssueRepository.Add(issue);
+            if ((result == FakeIssueRepository.NO_ERROR) )
             {
                 MessageBox.Show("Issue added!");
             }

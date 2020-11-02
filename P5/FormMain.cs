@@ -8,8 +8,9 @@ namespace P5
     public partial class FormMain : Form
     {
         private AppUser _CurrentAppUser = new AppUser();
-        FakeIssueRepository fakeIssueRepository;
         public int _id;
+        FakeIssueRepository faker = new FakeIssueRepository();
+        
         public FormMain()
         {
             InitializeComponent();
@@ -74,7 +75,6 @@ namespace P5
                 this._id = form._SelectedProjectId;
 
                 selectedProject = form._SelectedProjectName;
-                fakeIssueRepository = new FakeIssueRepository();
             }
             form.Dispose();
             return selectedProject;
@@ -96,19 +96,17 @@ namespace P5
 
         private void issuesDashboardToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-
-            FormDashboard form = new FormDashboard(_CurrentAppUser, _id);
+            FormDashboard form = new FormDashboard(_CurrentAppUser, _id, faker);
             form.ShowDialog();
             form.Dispose();
-
         }
 
         private void issuesRecordToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
 
-            FormRecord form = new FormRecord(_CurrentAppUser, _id);
+            FormRecord form = new FormRecord(_CurrentAppUser, _id,faker);
             form.ShowDialog();
-            form.Dispose();
+            
         }
 
         private void issuesModifyToolStripMenuItem_Click(object sender, System.EventArgs e)
