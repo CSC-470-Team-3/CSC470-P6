@@ -103,9 +103,11 @@ namespace Builder
                 if(issue.ProjectID == ProjectId)
                 {
                     if (!DiscoverersIssues.ContainsKey(issue.Discoverer))
-                        DiscoverersIssues.Add(issue.Discoverer, 0);
-                    DiscoverersIssues.Add(issue.Discoverer, DiscoverersIssues[issue.Discoverer] + 1);
+                        DiscoverersIssues.Add(issue.Discoverer, 1);
+                    else
+                          DiscoverersIssues[issue.Discoverer]+= 1;
                 }
+
             List<string> result = new List<string>();
             foreach(var pair in DiscoverersIssues)
                 result.Add(pair.Key + ": " + pair.Value);
@@ -119,9 +121,12 @@ namespace Builder
                 if(issue.ProjectID == ProjectId)
                 {
                     var month = (issue.DiscoveryDate.Year, issue.DiscoveryDate.Month);
+
                     if (!MonthIssues.ContainsKey(month))
-                        MonthIssues.Add(month, 0);
-                    MonthIssues.Add(month, MonthIssues[month] + 1);
+                        MonthIssues.Add(month, 1);
+                    else
+                        MonthIssues[month]+=1;
+                    
                 }
             List<string> result = new List<string>();
             foreach (var pair in MonthIssues)

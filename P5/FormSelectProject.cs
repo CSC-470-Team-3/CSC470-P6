@@ -54,5 +54,10 @@ namespace P5
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
+        private void listBoxProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

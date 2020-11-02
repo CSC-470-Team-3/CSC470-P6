@@ -5,7 +5,7 @@ namespace P5
 {
     public partial class FormRemoveProject : Form
     {
-        AppUser _CurrentAppUser;
+       public AppUser _CurrentAppUser;
         int _SelectedProjectId;
         public FormRemoveProject(AppUser appUser)
         {

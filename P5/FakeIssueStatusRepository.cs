@@ -13,10 +13,13 @@ namespace Builder
         public FakeIssueStatusRepository()
         {
             _IssueStatuses = new List<IssueStatus>();
-            Add(1, IssueStatus.CLOSED_WF);
-            Add(2, IssueStatus.OPEN);
-            Add(3, IssueStatus.OPEN);
-            Add(4, IssueStatus.FIXED);
+            Add(1, IssueStatus.OPEN);
+            Add(2, IssueStatus.ASSIGNED);
+            Add(3, IssueStatus.FIXED);
+            Add(4, IssueStatus.CLOSED_WF);
+            Add(5, IssueStatus.CLOSED_F);
+            Add(4, IssueStatus.CLOSED_BD);
+
         }
         public void Add(int Id, string value)
         {
