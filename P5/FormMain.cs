@@ -121,7 +121,14 @@ namespace P5
 
             if(form.DialogResult == DialogResult.OK)
             {
+                //isolate the selected issue
+                SelectedIssue = faker.GetIssueById(form.chosenID);
+
                 
+                FormIssueModify modifiedForm = new FormIssueModify(_CurrentAppUser, _id, faker, SelectedIssue.Id);
+                modifiedForm.Show();
+
+
             }
         }
 
