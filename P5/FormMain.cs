@@ -1,4 +1,6 @@
 ﻿using Builder;
+using System;
+using System.Collections.Generic;
 using Castle.DynamicProxy.Generators;
 using P5;
 using System.Windows.Forms;
@@ -10,6 +12,8 @@ namespace P5
         private AppUser _CurrentAppUser = new AppUser();
         public int _id;
         FakeIssueRepository faker = new FakeIssueRepository();
+
+        Issue SelectedIssue;
         
         public FormMain()
         {
@@ -117,7 +121,7 @@ namespace P5
 
             if(form.DialogResult == DialogResult.OK)
             {
-
+                
             }
         }
 
@@ -126,10 +130,30 @@ namespace P5
             FormSelectIssue form = new FormSelectIssue(_CurrentAppUser, _id, faker);
             form.ShowDialog();
 
-
+            //if something was selected
             if (form.DialogResult == DialogResult.OK)
             {
+                //isolate the selected issue
+                SelectedIssue = faker.GetIssueById(form.chosenID);
+
                 
+                DialogResult result = MessageBox.Show("Are you sure you want to remove: " + SelectedIssue.Title,
+                                "Confirmation",
+                                MessageBoxButtons.YesNo);
+
+
+                if (result == DialogResult.Yes)
+                {
+                    //remove it
+                    faker.Remove(SelectedIssue);
+                }
+                else
+                {
+                    //cancel message and return home
+                    MessageBox.Show("Remove canceled", "Attention");
+                }
+
+
             }
         }
     }
