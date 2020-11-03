@@ -112,7 +112,25 @@ namespace P5
 
         private void issuesModifyToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
+            FormSelectIssue form = new FormSelectIssue(_CurrentAppUser, _id, faker);
+            form.ShowDialog();
 
+            if(form.DialogResult == DialogResult.OK)
+            {
+
+            }
+        }
+
+        private void issuesRemoveToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            FormSelectIssue form = new FormSelectIssue(_CurrentAppUser, _id, faker);
+            form.ShowDialog();
+
+
+            if (form.DialogResult == DialogResult.OK)
+            {
+                
+            }
         }
     }
 }
