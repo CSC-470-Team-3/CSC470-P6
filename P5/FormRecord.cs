@@ -23,6 +23,7 @@ namespace P5
         
         public FormRecord(AppUser appUser, int selId, FakeIssueRepository faker)
         {
+            
             fakeIssueRepository = faker;
             _selId = selId;
             _CurrentAppUser = appUser;
@@ -33,6 +34,7 @@ namespace P5
         private void FormRecord_Load(object sender, EventArgs e)
         {
             this.CenterToParent();
+
 
             _i = fakeIssueRepository.GetTotalNumberOfIssues(_selId) + 1;
             IdBox.Text = (_i.ToString());
@@ -82,7 +84,7 @@ namespace P5
             {
                 MessageBox.Show("Please input unique Title");
             }
-            issue.ProjectID = 1;
+            issue.ProjectID = _selId;
             issue.Discoverer = comboBox1.SelectedItem.ToString();
             issue.Component = ComponentBox.Text.Trim();
             issue.DiscoveryDate = dateTimePicker1.Value;

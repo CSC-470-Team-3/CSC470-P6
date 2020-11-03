@@ -96,6 +96,7 @@ namespace P5
 
         private void issuesDashboardToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
+            
             FormDashboard form = new FormDashboard(_CurrentAppUser, _id, faker);
             form.ShowDialog();
             form.Dispose();
