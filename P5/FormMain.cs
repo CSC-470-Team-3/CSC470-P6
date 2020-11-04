@@ -152,7 +152,16 @@ namespace P5
                 if (result == DialogResult.Yes)
                 {
                     //remove it
-                    faker.Remove(SelectedIssue);
+                    bool isTrue = faker.Remove(SelectedIssue);
+                    if ((isTrue == true))
+                    {
+                        MessageBox.Show("Issue Removed!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error! " + result, "Requires your attention!");
+                    }
+
                 }
                 else
                 {

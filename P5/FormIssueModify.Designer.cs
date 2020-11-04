@@ -112,6 +112,7 @@
             this.DateTimePicker.Name = "DateTimePicker";
             this.DateTimePicker.Size = new System.Drawing.Size(341, 20);
             this.DateTimePicker.TabIndex = 30;
+            this.DateTimePicker.ValueChanged += new System.EventHandler(this.DateTimePicker_ValueChanged);
             // 
             // ComponentBox
             // 

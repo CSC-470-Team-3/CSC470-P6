@@ -79,28 +79,31 @@ namespace P5
             if (fakeIssueRepository.IsDuplicate(TitleTextBox.Text.Trim()) != true)
             {
                 issue.Title = TitleTextBox.Text.Trim();
+
+                issue.ProjectID = _selId;
+                issue.Discoverer = comboBox1.SelectedItem.ToString();
+                issue.Component = ComponentBox.Text.Trim();
+                issue.DiscoveryDate = dateTimePicker1.Value;
+                issue.IssueStatusId = fakeIssueStatusRepository.GetIdByStatus(comboBox2.SelectedItem.ToString());
+                issue.InitialDescription = InitialDescription.Text.Trim();
+
+                string result = fakeIssueRepository.Add(issue);
+                if ((result == FakeIssueRepository.NO_ERROR))
+                {
+                    MessageBox.Show("Issue added!");
+                }
+                else
+                {
+                    MessageBox.Show("Error! " + result, "Requires your attention!");
+                }
+                this.Close();
+
             }
             else
             {
                 MessageBox.Show("Please input unique Title");
             }
-            issue.ProjectID = _selId;
-            issue.Discoverer = comboBox1.SelectedItem.ToString();
-            issue.Component = ComponentBox.Text.Trim();
-            issue.DiscoveryDate = dateTimePicker1.Value;
-            issue.IssueStatusId = fakeIssueStatusRepository.GetIdByStatus(comboBox2.SelectedItem.ToString());
-            issue.InitialDescription = InitialDescription.Text.Trim();
 
-            string result = fakeIssueRepository.Add(issue);
-            if ((result == FakeIssueRepository.NO_ERROR) )
-            {
-                MessageBox.Show("Issue added!");
-            }
-            else
-            {
-                MessageBox.Show("Error! " + result, "Requires your attention!");
-            }
-            this.Close();
         }
     }
 }

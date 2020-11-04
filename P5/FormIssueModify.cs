@@ -33,6 +33,7 @@ namespace Builder
 
             IssueToModifyID = selectedID;
 
+
             InitializeComponent();
         }
 
@@ -65,13 +66,14 @@ namespace Builder
         void PopulateForm()
         {
             ModIssue = fakeIssueRepository.GetIssueById(IssueToModifyID);
+            int offsetForIndex = 1;
 
             IdBox.Text = ModIssue.Id.ToString();
             TitleBox.Text = ModIssue.Title;
             DateTimePicker.Value = ModIssue.DiscoveryDate;
             DiscovererComboBox.Text = ModIssue.Discoverer;
             ComponentBox.Text = ModIssue.Component;
-            StatusComboBox.SelectedIndex = ModIssue.IssueStatusId;
+            StatusComboBox.SelectedIndex = ModIssue.IssueStatusId - offsetForIndex;
             InitialDescription.Text = ModIssue.InitialDescription;
 
 
@@ -84,7 +86,44 @@ namespace Builder
 
         private void ModifyIssueButton_Click(object sender, EventArgs e)
         {
-            
+
+            if (fakeIssueRepository.IsDuplicate(TitleBox.Text.Trim()) == true)
+            {
+                MessageBox.Show("Name must be unique!!", "Attention!!");
+            }
+            else
+            {
+                int StatusOffset = 1;
+
+
+                ModIssue.Title = TitleBox.Text;
+                ModIssue.DiscoveryDate = DateTimePicker.Value;
+                ModIssue.Discoverer = DiscovererComboBox.Text;
+                ModIssue.Component = ComponentBox.Text;
+                ModIssue.IssueStatusId = StatusComboBox.SelectedIndex + StatusOffset;
+                ModIssue.InitialDescription = InitialDescription.Text;
+
+
+
+                string result = fakeIssueRepository.Modify(ModIssue);
+                if ((result == FakeIssueRepository.NO_ERROR))
+                {
+                    MessageBox.Show("Modify Successful!!");
+                }
+                else
+                {
+                    MessageBox.Show("Error! " + result, "Requires your attention!");
+                }
+
+
+                this.Close();
+            }
+        }
+
+        private void DateTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            //make it so that nothing in the future can be selected
+            this.DateTimePicker.MaxDate = DateTime.Now;
         }
     }
 }
