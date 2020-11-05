@@ -1,8 +1,4 @@
 ﻿using Builder;
-using System;
-using System.Collections.Generic;
-using Castle.DynamicProxy.Generators;
-using P5;
 using System.Windows.Forms;
 
 namespace P5
@@ -125,7 +121,7 @@ namespace P5
                 SelectedIssue = faker.GetIssueById(form.chosenID);
 
                 
-                FormIssueModify modifiedForm = new FormIssueModify(_CurrentAppUser, _id, faker, SelectedIssue.Id);
+                FormIssueModify modifiedForm = new FormIssueModify(faker, SelectedIssue.Id);
                 modifiedForm.Show();
 
 

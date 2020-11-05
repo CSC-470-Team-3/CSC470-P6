@@ -1,12 +1,5 @@
 ﻿using Builder;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace P5
@@ -14,8 +7,8 @@ namespace P5
     public partial class FormRecord : Form
     {
         FakeAppUserRepository _userRepository = new FakeAppUserRepository();
-        FakeIssueStatusRepository fakeIssueStatusRepository = new FakeIssueStatusRepository();
-        FakeIssueRepository fakeIssueRepository;
+        FakeIssueStatusRepository IssueStatusRepository = new FakeIssueStatusRepository();
+        FakeIssueRepository IssueRepository;
         AppUser _CurrentAppUser;
         int _selId;
         Issue issue = new Issue();
@@ -24,7 +17,7 @@ namespace P5
         public FormRecord(AppUser appUser, int selId, FakeIssueRepository faker)
         {
             
-            fakeIssueRepository = faker;
+            IssueRepository = faker;
             _selId = selId;
             _CurrentAppUser = appUser;
             
@@ -36,7 +29,15 @@ namespace P5
             this.CenterToParent();
 
 
-            _i = fakeIssueRepository.GetTotalNumberOfIssues(_selId) + 1;
+            //create and add a new issue
+            Issue tmp = new Issue();
+            IssueRepository.Add(tmp);
+
+            //get the index from newly implemented issue then remove it
+            _i = tmp.Id;
+            IssueRepository.Remove(tmp);
+
+
             IdBox.Text = (_i.ToString());
             
             foreach (AppUser user in _userRepository.GetAll())
@@ -46,7 +47,7 @@ namespace P5
             }
             comboBox1.SelectedIndex = 0;
             ComponentBox.SelectedText = "";
-            foreach (IssueStatus issueStatus in fakeIssueStatusRepository.GetAll())
+            foreach (IssueStatus issueStatus in IssueStatusRepository.GetAll())
             {
                 comboBox2.Items.Add(issueStatus.Value);
             }
@@ -75,19 +76,19 @@ namespace P5
 
         private void button2_Click(object sender, EventArgs e)
         {
-            issue.Id = _i;
-            if (fakeIssueRepository.IsDuplicate(TitleTextBox.Text.Trim()) != true)
+            if (IssueRepository.IsDuplicate(TitleTextBox.Text.Trim()) != true)
             {
+                issue.Id = _i;
                 issue.Title = TitleTextBox.Text.Trim();
 
                 issue.ProjectID = _selId;
                 issue.Discoverer = comboBox1.SelectedItem.ToString();
                 issue.Component = ComponentBox.Text.Trim();
                 issue.DiscoveryDate = dateTimePicker1.Value;
-                issue.IssueStatusId = fakeIssueStatusRepository.GetIdByStatus(comboBox2.SelectedItem.ToString());
+                issue.IssueStatusId = IssueStatusRepository.GetIdByStatus(comboBox2.SelectedItem.ToString());
                 issue.InitialDescription = InitialDescription.Text.Trim();
 
-                string result = fakeIssueRepository.Add(issue);
+                string result = IssueRepository.Add(issue);
                 if ((result == FakeIssueRepository.NO_ERROR))
                 {
                     MessageBox.Show("Issue added!");

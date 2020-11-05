@@ -1,12 +1,5 @@
 ﻿using P5;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Builder
@@ -14,23 +7,17 @@ namespace Builder
     public partial class FormIssueModify : Form
     {
         FakeAppUserRepository _userRepository = new FakeAppUserRepository();
-        FakeIssueStatusRepository fakeIssueStatusRepository = new FakeIssueStatusRepository();
+        FakeIssueStatusRepository StatusRepository = new FakeIssueStatusRepository();
 
-
-        AppUser _CurrentAppUser;
-        int SelectedProjectID;
-        FakeIssueRepository fakeIssueRepository;
+        FakeIssueRepository IssueRepository;
         int IssueToModifyID;
 
         Issue ModIssue;
 
 
-        public FormIssueModify(AppUser appUser, int id, FakeIssueRepository faker, int selectedID )
+        public FormIssueModify(FakeIssueRepository faker, int selectedID )
         {
-            _CurrentAppUser = appUser;
-            SelectedProjectID = id;
-            fakeIssueRepository = faker;
-
+            IssueRepository = faker;
             IssueToModifyID = selectedID;
 
 
@@ -55,7 +42,7 @@ namespace Builder
             }
 
 
-            foreach (IssueStatus issueStatus in fakeIssueStatusRepository.GetAll())
+            foreach (IssueStatus issueStatus in StatusRepository.GetAll())
             {
                 StatusComboBox.Items.Add(issueStatus.Value);
             }
@@ -65,7 +52,7 @@ namespace Builder
 
         void PopulateForm()
         {
-            ModIssue = fakeIssueRepository.GetIssueById(IssueToModifyID);
+            ModIssue = IssueRepository.GetIssueById(IssueToModifyID);
             int offsetForIndex = 1;
 
             IdBox.Text = ModIssue.Id.ToString();
@@ -87,7 +74,7 @@ namespace Builder
         private void ModifyIssueButton_Click(object sender, EventArgs e)
         {
 
-            if (fakeIssueRepository.IsDuplicate(TitleBox.Text.Trim()) == true)
+            if (IssueRepository.IsDuplicate(TitleBox.Text.Trim()) == true)
             {
                 MessageBox.Show("Name must be unique!!", "Attention!!");
             }
@@ -105,7 +92,7 @@ namespace Builder
 
 
 
-                string result = fakeIssueRepository.Modify(ModIssue);
+                string result = IssueRepository.Modify(ModIssue);
                 if ((result == FakeIssueRepository.NO_ERROR))
                 {
                     MessageBox.Show("Modify Successful!!");

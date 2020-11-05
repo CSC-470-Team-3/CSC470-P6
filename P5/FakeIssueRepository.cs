@@ -78,11 +78,13 @@ namespace Builder
             return NO_ERROR;
         }
 
+
         public List<Issue> GetAll(int ProjectId)
         {
             List<Issue> issues = new List<Issue>();
             foreach (Issue issue in _Issues)
-                issues.Add(issue);
+                if(issue.ProjectID == ProjectId)
+                    issues.Add(issue);
             return issues;
         }
 

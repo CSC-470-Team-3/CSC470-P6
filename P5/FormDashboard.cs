@@ -1,12 +1,6 @@
 ﻿using Builder;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -14,8 +8,7 @@ namespace P5
 {
     public partial class FormDashboard : Form
     {
-        FakeIssueRepository _fakeIssue;
-        FakeProjectRepository _fakeProject = new FakeProjectRepository();
+        FakeIssueRepository _Issues;
         
         AppUser _CurrentAppUser;
         int _selId;
@@ -23,7 +16,7 @@ namespace P5
         public FormDashboard( AppUser appUser, int selId, FakeIssueRepository fake)
         {
             
-            _fakeIssue = fake;
+            _Issues = fake;
             _CurrentAppUser = appUser;
             _selId = selId;
             InitializeComponent();
@@ -33,11 +26,11 @@ namespace P5
         {
             this.CenterToParent();
 
-            int i = _fakeIssue.GetTotalNumberOfIssues(_selId);
+            int i = _Issues.GetTotalNumberOfIssues(_selId);
             IDBox.Text = (i.ToString());
 
-            List<String> IssueMonth = _fakeIssue.GetIssuesByMonth(_selId);
-            List<String> users = _fakeIssue.GetIssuesByDiscoverer(_selId);
+            List<String> IssueMonth = _Issues.GetIssuesByMonth(_selId);
+            List<String> users = _Issues.GetIssuesByDiscoverer(_selId);
                 
             foreach(string monthly in IssueMonth)
             {
